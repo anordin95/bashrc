@@ -51,9 +51,17 @@ __export_ps1() {
   export PS1="${ORANGE}[$(pyenv version-name)]${RESET} ${CYAN}\W${RESET} ${WHITE}\t ${RESET} ${YELLOW}\$(parse_git_branch)${RED}\$(parse_git_dirty)${RESET} \n \$ "
 }
 __export_ps1
-export PROMPT_COMMAND='__export_ps1'
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;}__export_ps1"
 
 #------------END PROMPT------------------------#
+
+#------------SET SILENCE ZSH MAC OS CATALINA---#
+export BASH_SILENCE_DEPRECATION_WARNING=1
+#------------END SILENCE ZSH MAC OS CATALINA---#
+
+#------------SET MAX OPEN FILES----------------#
+ulimit -n 8192
+#------------END MAX OPEN FILES----------------#
 
 #------------SET LOAD GIT COMPLETION-----------#
 if [ -f ~/.git-completion.bash ]; then
@@ -65,13 +73,29 @@ fi
 alias gs='git status'
 alias gb='git branch'
 alias ga='git add'
+alias gc='git checkout'
+
+alias k='kubectl'
 
 alias ..='cd ..'
-
+alias dw='cd ~/software/dw/dw_manufacturing/dw_manufacturing'
+alias integration='cd ~/software/integration_test/integration_test'
+alias dwf='cd ~/software/dw/dw_flow/'
+alias btp='cd ~/software/butterfly_test_platform/butterfly_test_platform'
+# alias dbt='cd ~/software/dw/dbt'
 # enable coloring
 alias ls='ls -Gp'
+
+alias p='python'
+alias s='sublime'
+alias stop-dev-box='gcloud compute instances stop nordin-dev-big'
+alias start-dev-box='gcloud compute instances start nordin-dev-big --zone us-east1-d'
+alias ssh-dev-box='gcloud beta compute ssh --zone "us-east1-d" "nordin-dev-big" --project "butterfly-dw-prod" --tunnel-through-iap'
+alias dev-box='start-dev-box && sleep 5 && ssh-dev-box'
 # set coloring scheme
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+
+export PED_OPEN_DIRECTORIES=1
 #------------END COMMON ALIASES----------------#
 
 #------------SET DEFAULT EDITOR TO SUBLIME-----#
@@ -80,16 +104,16 @@ export EDITOR='sublime'
 
 #------------SET REQUIRED AIRFLOW CONFIG-------#
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export SLUGIFY_USES_TEXT_UNIDECODE=yes
 #------------END REQUIRED AIRFLOW CONFIG-------#
 
 #------------SET PYTHONPATH HACK---------------#
 # The airflow code in ~/software/dw/dw_manuf...
 # relies on having asic-test available to be
 # imported.
-export PYTHONPATH=${PYTHONPATH}:~/software/asic-test
+export PYTHONPATH=${PYTHONPATH}:~/code/software/asic-test
 #------------END PYTHONPATH HACK---------------#
-
-
-
-
-
+# BEGIN 18c0cbfd-1e2c-49fa-9b4b-eb17785f0ac3
+export SLUGIFY_USES_TEXT_UNIDECODE=yes
+export AIRFLOW_GPL_UNIDECODE=yes
+# END 18c0cbfd-1e2c-49fa-9b4b-eb17785f0ac3
